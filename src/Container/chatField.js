@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
-import { sendMessage, addUser, selectUser1, selectUser2 } from '../Actions/actionCreator'
+import { sendMessage, addUser, removeUser, selectUser2, editText } from '../Actions/actionCreator'
 import {connect} from 'react-redux'
 import '../App.css';
-import { Box, Grommet, Distribution, Clock, TextInput, TextArea, Text } from 'grommet';
+import { Box, Grommet, Distribution, Clock, TextInput, TextArea, Text, Select
+, DropButton, InfiniteScroll } from 'grommet';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
@@ -27,12 +28,17 @@ class ChatField extends Component {
     this.state = {
         message: '',
         username: '',
-        id: ''
+        id: 'e',
+        uID: 'e',
+        edit: '',
+        value: 'medium',
     }
     this.onSendMessage = this.onSendMessage.bind(this)
     this.onAddUser= this.onAddUser.bind(this)
     this.onAddId = this.onAddId.bind(this)
     this.onEnterSend = this.onEnterSend.bind(this)
+    this.onRemoveUser = this.onRemoveUser.bind(this)
+    this.onAlertTest = this.onAlertTest.bind(this)
   }
 
   onSendMessage(e) {
@@ -63,7 +69,21 @@ class ChatField extends Component {
     this.setState({username:''}) }
   }
 
+  onRemoveUser(e) {
+    this.setState({
+      id: e
+    })
+  }
 
+  onAlertTest(e) {
+    e == 'remove' ? this.props.removeUser(this.state.id) : alert("created on " + this.props.users.map(u=> u.date));
+  }
+
+ onEditText(e) {
+   e=='edit' ?
+    this.props.editText(this.state.uID,prompt("edit text below"))
+     : alert("feature not funtioning currently")
+ }
 
   render ()
   {  console.log(this.props)
@@ -92,11 +112,6 @@ class ChatField extends Component {
            this.setState({username:''}) }}> add user </button>
 
 
-<Button
-  label="Edit"
-  onClick={() => {alert("useless button")}}
-/>
-
 
 <Box
   direction="row"
@@ -110,27 +125,33 @@ class ChatField extends Component {
     {this.props.users.map( (u) =>
       (<div><span onClick={()=> {this.onAddId(u.id)}}>
           {u.name}
+
+          <Select
+            options={['info','remove']}
+            value={"Options"}
+            onChange={({ option }) => this.onAlertTest(option)}/>
+
          </span></div> ))}
        </div>
 </Box>
 
   <Box pad="large" background="light-3" animation="slideDown" width="large">
-
   <section className="First User">
 
-  {this.props.users.map((u)=> (u.id==this.state.id? <Text>{u.name}</Text> : null))}
+  {this.props.users.map((u)=> (u.id==this.state.id? <Text color="red">{u.name}</Text> : null))}
 
-  { (this.props.text.map( (t)=> (t.id==this.state.id? (<div> <span>
+  { (this.props.text.map( (t)=> (t.id==this.state.id? (<div> <span onClick={()=> this.setState({uID:t.uID})}>
 
-     {t.text} <Text color="grey" size="xsmall">{t.time}</Text>
+     {t.text} <Text color="grey" size="xsmall">{t.time}</Text> <Select options={['edit','forward']}
+     value={""} onChange={({option}) => this.onEditText(option)} alignSelf="end" size="small" />
 
    </span> </div>) : null)))}
 
-
-
 </section>
 </Box>
+
 </Box>
+
 <TextInput onChange={this.onSendMessage}
   value={this.state.message}
   placeholder="send message"
@@ -140,8 +161,6 @@ class ChatField extends Component {
 
 <Button onClick={() => {this.props.sendMessage(this.state.message, this.state.id);
 this.setState({message:''}) }}> send </Button>
-
-
 
      </div>
 
@@ -167,7 +186,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators ({
-      sendMessage, addUser
+      sendMessage, addUser, removeUser, editText
     },dispatch)
 }
 

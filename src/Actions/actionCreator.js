@@ -1,4 +1,4 @@
-import { SEND_MESSAGE, RECEIVE_MESSAGE, ADD_USER } from './actionTypes'
+import { SEND_MESSAGE, RECEIVE_MESSAGE, ADD_USER, REMOVE_USER, EDIT_TEXT } from './actionTypes'
 
 
 export const sendMessage = (text, id) => ({
@@ -10,4 +10,15 @@ export const sendMessage = (text, id) => ({
 export const addUser = name => ({
   type: ADD_USER,
   name
+})
+
+export const removeUser = id => ({
+  type: REMOVE_USER,
+  id
+})
+
+export const editText = (uID, newtext) => ({
+  type: EDIT_TEXT,
+  uID,
+  newtext
 })
