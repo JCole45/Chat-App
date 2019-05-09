@@ -156,7 +156,7 @@ class ChatField extends Component {
 
   {this.props.users.map((u)=> (u.id==this.state.id? <Text color="red">{u.name}</Text> : null))}
 
-  {(this.props.text.map( (t)=> (t.id==this.state.id? (<div> <span onClick={()=> this.setState({uID:t.uID})}>
+  {(this.props.text.map( (t)=> (t.id==this.state.id? (<div> <span  onClick={()=> this.setState({uID:t.uID})}>
 
      {t.text} <Text color="grey" size="xsmall">{t.time}</Text> <Select options={['edit']}
      value={"edit"} onChange={({option}) => this.onEditText(option)} alignSelf="end" size="small" />
@@ -174,7 +174,9 @@ class ChatField extends Component {
            {u.name}{this.state.fid==u.id? <span class="dot"></span> : null}  </li></ol>)}</span>
           <button onClick={()=> this.props.forwardText(this.state.fid, this.state.uID)}>send</button> </Box>
        }
-     />   </span> </div>) : null)))}
+     />
+ </span>
+     </div>) : null)))}
 
 </section>
 </Box>

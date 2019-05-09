@@ -1,11 +1,13 @@
 import { SEND_MESSAGE, ADD_USER, REMOVE_USER, EDIT_TEXT, FORWARD_TEXT } from '../Actions/actionTypes'
 import { combineReducers } from 'redux'
+import casual from 'casual-browserify'
 
 var INIT_STATE = ["first state"]
 var iD= 0
 var uID = 0
 var fuID = -1
-var test = require('casual')
+var rID = 0
+
 
 
 const Send = (state=INIT_STATE, action) => {
@@ -14,12 +16,19 @@ const Send = (state=INIT_STATE, action) => {
       case SEND_MESSAGE:
       var date = new Date
       var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+      var sentence = casual.sentence
 
       return [...state, {
           id:action.id,
           text: action.text,
+          reply: sentence,
           time: time,
           uID: uID++
+        }, {
+          id: action.id,
+          text: sentence,
+          time: time,
+          rID: rID++
         }
       ]
 
