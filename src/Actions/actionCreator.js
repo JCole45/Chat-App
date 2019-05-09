@@ -1,4 +1,4 @@
-import { SEND_MESSAGE, RECEIVE_MESSAGE, ADD_USER, REMOVE_USER, EDIT_TEXT } from './actionTypes'
+import { SEND_MESSAGE, RECEIVE_MESSAGE, ADD_USER, REMOVE_USER, EDIT_TEXT, FORWARD_TEXT } from './actionTypes'
 
 
 export const sendMessage = (text, id) => ({
@@ -21,4 +21,10 @@ export const editText = (uID, newtext) => ({
   type: EDIT_TEXT,
   uID,
   newtext
+})
+
+export const forwardText = (id, uID) => ({
+  type: FORWARD_TEXT,
+  id,
+  uID
 })

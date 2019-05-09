@@ -1,9 +1,11 @@
-import { SEND_MESSAGE, ADD_USER, REMOVE_USER, EDIT_TEXT } from '../Actions/actionTypes'
+import { SEND_MESSAGE, ADD_USER, REMOVE_USER, EDIT_TEXT, FORWARD_TEXT } from '../Actions/actionTypes'
 import { combineReducers } from 'redux'
 
 var INIT_STATE = ["first state"]
 var iD= 0
 var uID = 0
+var fuID = -1
+var test = require('casual')
 
 
 const Send = (state=INIT_STATE, action) => {
@@ -33,6 +35,18 @@ const Send = (state=INIT_STATE, action) => {
         return i
       })
 
+      case FORWARD_TEXT:
+      return [...state, {
+        id: action.id,
+        text: state.map((i)=> {
+          if(i.uID==action.uID) {
+            return i.text
+          }
+        }),
+        time: time,
+        uID: fuID--
+      }]
+
       default:
       return (state)
 
@@ -51,8 +65,12 @@ const Add = (state= [], action) => {
 
       case REMOVE_USER:
       var newArr
-      return (newArr = state.filter( user => user.id !== action.id))
+      return (window.confirm("are you sure you want to delete user?") ?
+      (newArr = state.filter( user => user.id !== action.id)): state)
 
+
+      case FORWARD_TEXT:
+      (alert("message forwarded to " + state.map(a=>action.id==a.id? a.name: null)))
 
       default:
     return (state)

@@ -26,3 +26,11 @@
     transform: rotate(360deg);
   }
 }
+
+.dot {
+  height: 12px;
+  width: 12px;
+  background-color: #7FFF00;
+  border-radius: 50%;
+  display: inline-block;
+}
